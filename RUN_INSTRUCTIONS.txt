@@ -1,0 +1,166 @@
+=================================================================
+                    REXPLORER - RUN INSTRUCTIONS
+=================================================================
+
+QUICK START (10 minutes)
+------------------------
+
+1. CÀI ĐẶT C++ BUILD TOOLS (Windows only, quan trọng!)
+   > winget install Microsoft.VisualStudio.2022.BuildTools --force --override "--passive --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+   
+   Hoặc download manual:
+   https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022
+   → Chọn "Desktop development with C++"
+   
+   RESTART TERMINAL sau khi cài xong!
+
+2. CÀI ĐẶT RUST (nếu chưa có)
+   Windows: Download từ https://rustup.rs
+   Chạy: rustup-init.exe và làm theo hướng dẫn
+   
+   RESTART TERMINAL sau khi cài xong!
+
+3. VERIFY CÀI ĐẶT
+   > cargo --version
+   > node --version
+   
+   Nếu không có lỗi → OK!
+
+4. CÀI ĐẶT DEPENDENCIES
+   > npm install
+   (Đã cài xong rồi nếu thấy node_modules/)
+
+5. CHẠY APP
+   > npm run tauri dev
+
+   Lần đầu sẽ compile Rust (3-5 phút)
+   Lần sau sẽ nhanh hơn (~30s)
+
+4. APP SẼ MỞ
+   - Dual panel file manager
+   - Mock data: gdrive, onedrive, local
+   - Thử keyboard shortcuts (F1 để xem help)
+
+=================================================================
+
+STRUCTURE OVERVIEW
+------------------
+
+src/                    → Frontend (SvelteKit)
+  lib/
+    components/         → 10 Svelte components
+    stores/             → State management
+    api/                → Tauri API wrapper
+    types/              → TypeScript definitions
+  routes/               → SvelteKit pages
+
+src-tauri/              → Backend (Rust)
+  src/
+    main.rs             → Entry point
+    rclone.rs           → Mock rclone integration
+
+=================================================================
+
+KEYBOARD SHORTCUTS
+------------------
+
+Ctrl+T      New tab
+Ctrl+W      Close tab
+Tab         Switch left/right panel
+F5          Copy selected files
+F6          Move selected files
+Delete      Delete selected files
+F1          Show help
+
+=================================================================
+
+FEATURES WORKING
+----------------
+
+✓ Dual panel file manager
+✓ Multi-tab support
+✓ Resizable panels
+✓ Account management (mock)
+✓ Task monitoring (mock)
+✓ Keyboard shortcuts
+✓ Dark theme
+
+=================================================================
+
+DOCUMENTATION
+-------------
+
+README.md                  → Overview
+QUICK_START.md             → Getting started guide
+PROJECT_STRUCTURE.md       → Architecture details
+IMPLEMENTATION_SUMMARY.md  → Hoàn thành gì rồi
+
+=================================================================
+
+BUILD FOR PRODUCTION
+--------------------
+
+> npm run tauri build
+
+Output:
+Windows: src-tauri/target/release/bundle/msi/
+macOS:   src-tauri/target/release/bundle/dmg/
+Linux:   src-tauri/target/release/bundle/deb/
+
+=================================================================
+
+TROUBLESHOOTING
+---------------
+
+Q: "error: linker link.exe not found"
+A: WINDOWS - Chưa cài C++ Build Tools:
+   
+   Cách 1 (Nhanh):
+   > winget install Microsoft.VisualStudio.2022.BuildTools --force --override "--passive --wait --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+   
+   Cách 2 (Manual):
+   1. Download: https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022
+   2. Chọn "Desktop development with C++"
+   3. Install (~6GB, mất ~15 phút)
+   
+   SAU ĐÓ: RESTART terminal và chạy lại npm run tauri dev
+
+Q: "error: linker cc not found" (macOS)
+A: > xcode-select --install
+
+Q: App không mở?
+A: Check terminal cho errors, thường là Rust compile issue
+
+Q: Port 5173 đã dùng?
+A: Kill process đang dùng port hoặc đổi port trong vite.config.ts
+
+Q: Cargo không tìm thấy sau khi cài Rust?
+A: RESTART terminal (hoặc reboot máy)
+
+Q: "failed to parse icon" error?
+A: Icons đã bị disable. App sẽ dùng icon mặc định.
+   Thêm icons sau nếu cần (xem QUICK_START.md)
+
+=================================================================
+
+CURRENT STATE: MOCK MODE
+-------------------------
+
+App đang dùng mock data để test UI/UX.
+
+Để integrate rclone thật:
+- Xem PROJECT_STRUCTURE.md → "Next Steps"
+- Implement rclone rcd daemon
+- Replace mock commands với RC API calls
+- Add OAuth flow
+
+=================================================================
+
+CONTACT & SUPPORT
+-----------------
+
+Tauri Docs:      https://tauri.app
+SvelteKit Docs:  https://kit.svelte.dev
+Rclone Docs:     https://rclone.org/rc
+
+=================================================================
